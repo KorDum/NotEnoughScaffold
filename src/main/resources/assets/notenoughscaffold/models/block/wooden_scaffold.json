@@ -1,0 +1,7 @@
+{
+	"parent": "block/cube_column",
+	"textures": {
+		"side": "notenoughscaffold:blocks/wooden_scaffold_sides",
+		"end": "notenoughscaffold:blocks/wooden_scaffold_bottomtop"
+	}
+}

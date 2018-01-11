@@ -1,0 +1,16 @@
+[
+{
+  "modid": "notenoughscaffold",
+  "name": "Not Enough Scaffold",
+  "description": "Not Enough Scaffold",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Alhetta", "KorDum"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

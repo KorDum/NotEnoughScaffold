@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "ISI",
+        "S S",
+        "ISI"
+    ],
+    "key": {
+        "I": {
+            "item": "minecraft:iron_ingot"
+        },
+        "S": {
+            "item": "notenoughscaffold:wooden_scaffold"
+        }
+    },
+    "result": {
+        "item": "notenoughscaffold:iron_scaffold",
+        "count": 4
+    }
+}

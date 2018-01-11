@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "PPP",
+        "SSS",
+        "S S"
+    ],
+    "key": {
+        "P": {
+            "type": "forge:ore_dict",
+            "ore": "plankWood"
+        },
+        "S": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "notenoughscaffold:wooden_scaffold",
+        "count": 8
+    }
+}
