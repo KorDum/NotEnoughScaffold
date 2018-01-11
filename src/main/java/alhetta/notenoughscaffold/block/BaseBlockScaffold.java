@@ -34,6 +34,15 @@ public abstract class BaseBlockScaffold extends BlockBase {
             return false;
         }
 
+        BlockPos playerPos = new BlockPos(
+            Math.floor(playerIn.posX),
+            playerIn.posY - 0.5,
+            Math.floor(playerIn.posZ)
+        );
+        if (playerPos.equals(pos)) {
+            return false;
+        }
+
         BlockPos newPos = new BlockPos(pos);
         while (true) {
             newPos = newPos.up();
@@ -42,7 +51,7 @@ public abstract class BaseBlockScaffold extends BlockBase {
                 continue;
             }
 
-            if (worldIn.isAirBlock(newPos)) {
+            if (canPlaceBlockAt(worldIn, newPos)) {
                 worldIn.setBlockState(newPos, state);
                 break;
             }
@@ -103,11 +112,12 @@ public abstract class BaseBlockScaffold extends BlockBase {
 
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        return canBlockStay(worldIn, pos);
+        return super.canPlaceBlockAt(worldIn, pos)
+            && canBlockStay(worldIn, pos);
     }
 
     private double limit(double value, double min, double max) {
-        if ((Double.isNaN(value)) || (value <= min)) {
+        if (Double.isNaN(value) || value <= min) {
             return min;
         }
         if (value >= max) {
