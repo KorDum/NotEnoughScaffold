@@ -48,7 +48,7 @@ public abstract class BaseBlockScaffold extends BlockBase {
             }
             return false;
         }
-        
+
         if (!playerIn.isCreative()) {
             stack.shrink(1);
         }

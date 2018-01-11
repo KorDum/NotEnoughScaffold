@@ -6,7 +6,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class EnchantmentRegistry {
     public static Enchantment BIG_HOLES;
-    
+
     public static void init() {
         BIG_HOLES = registerEnchantment(new BigHolesEnchantment(), "big_holes");
         MinecraftForge.EVENT_BUS.register(EnchantmentEventHandler.INSTANCE);

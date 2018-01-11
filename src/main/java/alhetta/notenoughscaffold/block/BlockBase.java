@@ -6,12 +6,6 @@ import net.minecraft.block.material.Material;
 public abstract class BlockBase extends Block {
     private String name;
 
-    //---------------------------------------------------------------------------
-    //
-    // CONSTRUCTOR
-    //
-    //---------------------------------------------------------------------------
-
     public BlockBase(Material material, String name, float hardness, float resistance) {
         super(material);
         this.name = name;

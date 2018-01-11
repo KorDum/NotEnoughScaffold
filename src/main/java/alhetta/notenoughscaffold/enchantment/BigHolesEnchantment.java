@@ -4,19 +4,10 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
-
-import java.util.Set;
 
 import alhetta.notenoughscaffold.util.IdentityUtil;
 
 public class BigHolesEnchantment extends Enchantment {
-
-    //---------------------------------------------------------------------------
-    //
-    // CONSTRUCTOR
-    //
-    //---------------------------------------------------------------------------
 
     public BigHolesEnchantment() {
         super(Rarity.RARE, EnumEnchantmentType.DIGGER, new EntityEquipmentSlot[]{

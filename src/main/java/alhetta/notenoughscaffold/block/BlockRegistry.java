@@ -24,7 +24,7 @@ public class BlockRegistry {
     public static void registerRenders() {
 
     }
-    
+
     public static void registerBlocks(IForgeRegistry<Block> registry) {
         registry.registerAll(blockList.toArray(new Block[0]));
     }

@@ -19,7 +19,7 @@ import alhetta.notenoughscaffold.util.IdentityUtil;
 
 class EnchantmentEventHandler {
     public static EnchantmentEventHandler INSTANCE = new EnchantmentEventHandler();
-    
+
     private EnumFacing side;
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
