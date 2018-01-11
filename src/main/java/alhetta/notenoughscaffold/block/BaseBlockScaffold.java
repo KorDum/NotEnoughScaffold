@@ -81,6 +81,14 @@ public abstract class BaseBlockScaffold extends BlockBase {
     }
 
     @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+        super.onBlockAdded(worldIn, pos, state);
+        if (!canBlockStay(worldIn, pos)) {
+            worldIn.destroyBlock(pos, true);
+        }
+    }
+
+    @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         if (!canBlockStay(worldIn, pos)) {
             worldIn.destroyBlock(pos, true);

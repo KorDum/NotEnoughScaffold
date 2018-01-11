@@ -10,12 +10,4 @@ public class CommonProxy {
         ItemRegistry.init();
         EnchantmentRegistry.init();
     }
-
-    public void init() {
-        // ignored
-    }
-
-    public void postInit() {
-        // ignored
-    }
 }
