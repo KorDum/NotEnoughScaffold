@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Map;
+import java.util.Random;
 
 import alhetta.notenoughscaffold.util.IdentityUtil;
 
@@ -44,11 +45,18 @@ class EnchantmentEventHandler {
             return;
         }
 
+        int chance = 100;
+        Enchantment unbreaking = Enchantment.REGISTRY.getObjectById(34);
+        if (enchantments.containsKey(unbreaking)) {
+            chance /= enchantments.get(unbreaking) + 1;
+        }
+
         World world = event.getWorld();
         if (!canHarvest(world, event.getPos())) {
             return;
         }
 
+        Random random = new Random();
         int damage = 0;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
@@ -70,7 +78,9 @@ class EnchantmentEventHandler {
                 }
 
                 world.destroyBlock(pos, true);
-                damage++;
+                if (random.nextInt(100) <= chance) {
+                    damage++;
+                }
             }
         }
 
