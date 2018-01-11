@@ -101,6 +101,11 @@ public abstract class BaseBlockScaffold extends BlockBase {
         return material != Material.AIR && material.isSolid();
     }
 
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+        return canBlockStay(worldIn, pos);
+    }
+
     private double limit(double value, double min, double max) {
         if ((Double.isNaN(value)) || (value <= min)) {
             return min;
