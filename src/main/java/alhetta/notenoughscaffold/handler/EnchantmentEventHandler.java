@@ -1,4 +1,4 @@
-package alhetta.notenoughscaffold.enchantment;
+package alhetta.notenoughscaffold.handler;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;

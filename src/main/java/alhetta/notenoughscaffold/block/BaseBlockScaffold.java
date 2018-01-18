@@ -10,16 +10,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public abstract class BaseBlockScaffold extends BlockBase {
+public abstract class BaseBlockScaffold extends Block {
     protected static final AxisAlignedBB COLLISION_AABB = new AxisAlignedBB(0.03125D, 0.0D, 0.03125D, 0.96875D, 1.0D, 0.96875D);
 
-    public BaseBlockScaffold(Material material, String name, float hardness, float resistance) {
-        super(material, name, hardness, resistance);
+    public BaseBlockScaffold(Material material, float hardness, float resistance) {
+        super(material);
+        setHardness(hardness);
+        setResistance(resistance);
     }
 
     @Override
@@ -61,6 +64,8 @@ public abstract class BaseBlockScaffold extends BlockBase {
         if (!playerIn.isCreative()) {
             stack.shrink(1);
         }
+
+        worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), blockSoundType.getPlaceSound(), SoundCategory.BLOCKS, 1, 1, true);
         return true;
     }
 
@@ -104,10 +109,63 @@ public abstract class BaseBlockScaffold extends BlockBase {
         }
     }
 
-    private boolean canBlockStay(World worldIn, BlockPos pos) {
-        IBlockState bottomBlock = worldIn.getBlockState(pos.down());
+    private boolean canBlockStay(World world, BlockPos pos) {
+        if (checkDownBlock(world, pos.down())) {
+            return true;
+        }
+
+        int sideBlockAvailable = getSideBlockAvailable();
+        for (int i = 1; i <= sideBlockAvailable; i++) {
+            BlockPos nearPos = pos.add(i, 0, 0);
+            if (!checkSideBlock(world, nearPos)) {
+                break;
+            }
+            if (checkDownBlock(world, nearPos.down())) {
+                return true;
+            }
+        }
+
+        for (int i = -1; i >= -sideBlockAvailable; i--) {
+            BlockPos nearPos = pos.add(i, 0, 0);
+            if (!checkSideBlock(world, nearPos)) {
+                break;
+            }
+            if (checkDownBlock(world, nearPos.down())) {
+                return true;
+            }
+        }
+
+        for (int i = 1; i <= sideBlockAvailable; i++) {
+            BlockPos nearPos = pos.add(0, 0, i);
+            if (!checkSideBlock(world, nearPos)) {
+                break;
+            }
+            if (checkDownBlock(world, nearPos.down())) {
+                return true;
+            }
+        }
+
+        for (int i = -1; i >= -sideBlockAvailable; i--) {
+            BlockPos nearPos = pos.add(0, 0, i);
+            if (!checkSideBlock(world, nearPos)) {
+                break;
+            }
+            if (checkDownBlock(world, nearPos.down())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkSideBlock(World world, BlockPos pos) {
+        IBlockState sideBlock = world.getBlockState(pos);
+        return sideBlock.getBlock() == this;
+    }
+
+    private boolean checkDownBlock(World world, BlockPos pos) {
+        IBlockState bottomBlock = world.getBlockState(pos);
         Material material = bottomBlock.getMaterial();
-        return material != Material.AIR && material.isSolid();
+        return material.isSolid();
     }
 
     @Override
@@ -146,4 +204,10 @@ public abstract class BaseBlockScaffold extends BlockBase {
     }
 
     protected abstract double getMotionSpeed();
+
+    protected abstract int getSideBlockAvailable();
+
+    private enum State {
+        SCAFFOLD
+    }
 }

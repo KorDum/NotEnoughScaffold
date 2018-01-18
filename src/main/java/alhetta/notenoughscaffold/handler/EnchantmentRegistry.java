@@ -1,14 +1,15 @@
-package alhetta.notenoughscaffold.enchantment;
+package alhetta.notenoughscaffold.handler;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import alhetta.notenoughscaffold.config.Config;
+import alhetta.notenoughscaffold.enchantment.BigHolesEnchantment;
 
 public class EnchantmentRegistry {
     public static Enchantment BIG_HOLES;
-    
+
     private static Config config;
 
     public static void init(Config config) {

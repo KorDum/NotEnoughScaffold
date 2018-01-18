@@ -1,4 +1,4 @@
-package alhetta.notenoughscaffold;
+package alhetta.notenoughscaffold.handler;
 
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -9,10 +9,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import alhetta.notenoughscaffold.block.BlockRegistry;
-import alhetta.notenoughscaffold.enchantment.EnchantmentRegistry;
-import alhetta.notenoughscaffold.item.ItemRegistry;
 
 @Mod.EventBusSubscriber
 public class RegistrationHandler {
@@ -29,7 +25,6 @@ public class RegistrationHandler {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void registerModels(ModelRegistryEvent event) {
-        BlockRegistry.registerRenders();
         ItemRegistry.registerRenders();
     }
 
