@@ -8,7 +8,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mod.EventBusSubscriber
 public class BlockRegistry {
     public static BlockBase WOODEN_SCAFFOLD;
     public static BlockBase IRON_SCAFFOLD;
