@@ -15,7 +15,7 @@ public class EnchantmentRegistry {
     public static void init(Config config) {
         EnchantmentRegistry.config = config;
         if (config.bigHole) {
-            BIG_HOLES = registerEnchantment(new BigHolesEnchantment(), "big_holes");
+            BIG_HOLES = registerEnchantment(new BigHolesEnchantment(config), "big_holes");
             MinecraftForge.EVENT_BUS.register(EnchantmentEventHandler.INSTANCE);
         }
     }

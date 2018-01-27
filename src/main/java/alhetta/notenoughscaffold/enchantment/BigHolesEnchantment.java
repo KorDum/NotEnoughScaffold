@@ -5,18 +5,22 @@ import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 
+import alhetta.notenoughscaffold.config.Config;
 import alhetta.notenoughscaffold.util.IdentityUtil;
 
 public class BigHolesEnchantment extends Enchantment {
-
-    public BigHolesEnchantment() {
-        super(Rarity.RARE, EnumEnchantmentType.DIGGER, new EntityEquipmentSlot[]{
+    private Config config;
+    
+    public BigHolesEnchantment(Config config) {
+        super(Rarity.VERY_RARE, EnumEnchantmentType.DIGGER, new EntityEquipmentSlot[]{
             EntityEquipmentSlot.MAINHAND
         });
+        this.config = config;
     }
 
     public boolean canApply(ItemStack stack) {
-        return IdentityUtil.isShovel(stack);
+        return (config.canBigHoleOnShovel && IdentityUtil.isShovel(stack))
+            || (config.canBigHoleOnPickaxe && IdentityUtil.isPickaxe(stack));
     }
 
     @Override

@@ -1,9 +1,11 @@
 package alhetta.notenoughscaffold.handler;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -36,7 +38,9 @@ class EnchantmentEventHandler {
         }
 
         ItemStack stack = player.getHeldItemMainhand();
-        if (!IdentityUtil.isShovel(stack)) {
+        boolean isShovel = IdentityUtil.isShovel(stack);
+        boolean isPickaxe = IdentityUtil.isPickaxe(stack);
+        if (!isShovel && !isPickaxe) {
             return;
         }
 
@@ -52,7 +56,7 @@ class EnchantmentEventHandler {
         }
 
         World world = event.getWorld();
-        if (!canHarvest(world, event.getPos())) {
+        if (!canHarvest(world, event.getPos(), isShovel, isPickaxe)) {
             return;
         }
 
@@ -73,7 +77,7 @@ class EnchantmentEventHandler {
                     pos = event.getPos().add(i, j, 0);
                 }
 
-                if (!canHarvest(world, pos)) {
+                if (!canHarvest(world, pos, isShovel, isPickaxe)) {
                     continue;
                 }
 
@@ -87,7 +91,22 @@ class EnchantmentEventHandler {
         stack.setItemDamage(stack.getItemDamage() + damage);
     }
 
-    private boolean canHarvest(World world, BlockPos pos) {
+    private boolean canHarvest(World world, BlockPos pos, boolean isShovel, boolean isPickaxe) {
+        return (isShovel && canHarvestByShovel(world, pos))
+            || (isPickaxe && canHarvestByPickaxe(world, pos));
+    }
+
+    private boolean canHarvestByPickaxe(World world, BlockPos pos) {
+        IBlockState blockState = world.getBlockState(pos);
+        Block block = blockState.getBlock();
+        String requiredTool = block.getHarvestTool(blockState);
+        return block != Blocks.OBSIDIAN
+            && !block.hasTileEntity(blockState)
+            && requiredTool != null
+            && requiredTool.equals("pickaxe");
+    }
+
+    private boolean canHarvestByShovel(World world, BlockPos pos) {
         IBlockState blockState = world.getBlockState(pos);
         String requiredTool = blockState.getBlock().getHarvestTool(blockState);
         return requiredTool != null && requiredTool.equals("shovel");
