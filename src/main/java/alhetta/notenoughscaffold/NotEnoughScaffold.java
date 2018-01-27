@@ -14,7 +14,7 @@ import alhetta.notenoughscaffold.proxy.CommonProxy;
 )
 public class NotEnoughScaffold {
     public static final String MODID = "notenoughscaffold";
-    public static final String VERSION = "1.3";
+    public static final String VERSION = "1.4";
 
     @SidedProxy(
         clientSide = "alhetta.notenoughscaffold.proxy.ClientProxy",

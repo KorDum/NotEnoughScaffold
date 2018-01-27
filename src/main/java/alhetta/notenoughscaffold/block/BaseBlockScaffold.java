@@ -17,7 +17,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public abstract class BaseBlockScaffold extends Block {
-    protected static final AxisAlignedBB COLLISION_AABB = new AxisAlignedBB(0.03125D, 0.0D, 0.03125D, 0.96875D, 1.0D, 0.96875D);
+    private static final AxisAlignedBB COLLISION_AABB = new AxisAlignedBB(0.03125D, 0.0D, 0.03125D, 0.96875D, 1.0D, 0.96875D);
 
     public BaseBlockScaffold(Material material, float hardness, float resistance) {
         super(material);
@@ -27,6 +27,10 @@ public abstract class BaseBlockScaffold extends Block {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (facing == EnumFacing.UP) {
+            return false;
+        }
+
         ItemStack stack = playerIn.getHeldItem(hand);
         if (stack.isEmpty()) {
             return false;
