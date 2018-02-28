@@ -2,3 +2,4 @@ tile.wooden_scaffold.name=Деревянные леса
 tile.iron_scaffold.name=Укрепленные леса
 
 enchantment.big_holes=Большие дыры
+enchantment.big_holes.desc=Вскапывает область 3х3! Тратит прочность инструмента соразмерно.
