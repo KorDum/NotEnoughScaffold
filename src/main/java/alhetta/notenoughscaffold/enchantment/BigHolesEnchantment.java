@@ -2,6 +2,7 @@ package alhetta.notenoughscaffold.enchantment;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 
@@ -10,7 +11,7 @@ import alhetta.notenoughscaffold.util.IdentityUtil;
 
 public class BigHolesEnchantment extends Enchantment {
     private Config config;
-    
+
     public BigHolesEnchantment(Config config) {
         super(Rarity.VERY_RARE, EnumEnchantmentType.DIGGER, new EntityEquipmentSlot[]{
             EntityEquipmentSlot.MAINHAND
@@ -38,5 +39,13 @@ public class BigHolesEnchantment extends Enchantment {
 
     public int getMaxLevel() {
         return 1;
+    }
+
+    @Override
+    protected boolean canApplyTogether(Enchantment ench) {
+        if (ench.getRegistryName().getResourcePath().equals("smelting")) {
+            return false;
+        }
+        return super.canApplyTogether(ench);
     }
 }
