@@ -1,5 +1,8 @@
 package alhetta.notenoughscaffold.handler;
 
+import alhetta.notenoughscaffold.registry.BlockRegistry;
+import alhetta.notenoughscaffold.registry.EnchantmentRegistry;
+import alhetta.notenoughscaffold.registry.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;

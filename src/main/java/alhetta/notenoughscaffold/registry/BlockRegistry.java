@@ -1,4 +1,4 @@
-package alhetta.notenoughscaffold.handler;
+package alhetta.notenoughscaffold.registry;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;

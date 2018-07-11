@@ -1,11 +1,13 @@
 package alhetta.notenoughscaffold.handler;
 
+import alhetta.notenoughscaffold.registry.EnchantmentRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +22,7 @@ import java.util.Random;
 
 import alhetta.notenoughscaffold.util.IdentityUtil;
 
-class EnchantmentEventHandler {
+public class EnchantmentEventHandler {
     public static EnchantmentEventHandler INSTANCE = new EnchantmentEventHandler();
 
     private EnumFacing side;
@@ -30,27 +32,27 @@ class EnchantmentEventHandler {
         side = event.getFace();
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public void onBlockBreakEvent(BlockEvent.BreakEvent event) {
         EntityPlayer player = event.getPlayer();
         if (player.isSneaking()) {
             return;
         }
 
-        ItemStack stack = player.getHeldItemMainhand();
-        boolean isShovel = IdentityUtil.isShovel(stack);
-        boolean isPickaxe = IdentityUtil.isPickaxe(stack);
+        ItemStack toolStack = player.getHeldItemMainhand();
+        boolean isShovel = IdentityUtil.isShovel(toolStack);
+        boolean isPickaxe = IdentityUtil.isPickaxe(toolStack);
         if (!isShovel && !isPickaxe) {
             return;
         }
 
-        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(toolStack);
         if (!enchantments.containsKey(EnchantmentRegistry.BIG_HOLES)) {
             return;
         }
 
+        Enchantment unbreaking = Enchantment.REGISTRY.getObject(Enchantments.UNBREAKING.getRegistryName());
         int chance = 100;
-        Enchantment unbreaking = Enchantment.REGISTRY.getObjectById(34);
         if (enchantments.containsKey(unbreaking)) {
             chance /= enchantments.get(unbreaking) + 1;
         }
@@ -81,14 +83,18 @@ class EnchantmentEventHandler {
                     continue;
                 }
 
-                world.destroyBlock(pos, true);
-                if (random.nextInt(100) <= chance) {
+                IBlockState blockState = world.getBlockState(pos);
+                Block block = blockState.getBlock();
+                block.harvestBlock(world, player, pos, blockState, null, toolStack);
+                world.setBlockToAir(pos);
+
+                if (!player.isCreative() && random.nextInt(100) <= chance) {
                     damage++;
                 }
             }
         }
 
-        stack.setItemDamage(stack.getItemDamage() + damage);
+        toolStack.setItemDamage(toolStack.getItemDamage() + damage);
     }
 
     private boolean canHarvest(World world, BlockPos pos, boolean isShovel, boolean isPickaxe) {

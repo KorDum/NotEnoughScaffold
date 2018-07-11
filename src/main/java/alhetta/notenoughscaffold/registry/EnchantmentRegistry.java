@@ -1,5 +1,6 @@
-package alhetta.notenoughscaffold.handler;
+package alhetta.notenoughscaffold.registry;
 
+import alhetta.notenoughscaffold.handler.EnchantmentEventHandler;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.registries.IForgeRegistry;
