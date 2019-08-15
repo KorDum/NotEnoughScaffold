@@ -19,19 +19,19 @@ import net.minecraft.world.World;
 public abstract class BaseBlockScaffold extends Block {
     private static final AxisAlignedBB COLLISION_AABB = new AxisAlignedBB(0.03125D, 0.0D, 0.03125D, 0.96875D, 1.0D, 0.96875D);
 
-    public BaseBlockScaffold(Material material, float hardness, float resistance) {
+    BaseBlockScaffold(Material material, float hardness, float resistance) {
         super(material);
         setHardness(hardness);
         setResistance(resistance);
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (facing == EnumFacing.UP) {
             return false;
         }
 
-        ItemStack stack = playerIn.getHeldItem(hand);
+        ItemStack stack = player.getHeldItem(hand);
         if (stack.isEmpty()) {
             return false;
         }
@@ -42,9 +42,9 @@ public abstract class BaseBlockScaffold extends Block {
         }
 
         BlockPos playerPos = new BlockPos(
-            Math.floor(playerIn.posX),
-            playerIn.posY - 0.5,
-            Math.floor(playerIn.posZ)
+            Math.floor(player.posX),
+            player.posY - 0.5,
+            Math.floor(player.posZ)
         );
         if (playerPos.equals(pos)) {
             return false;
@@ -53,28 +53,28 @@ public abstract class BaseBlockScaffold extends Block {
         BlockPos newPos = new BlockPos(pos);
         while (true) {
             newPos = newPos.up();
-            IBlockState upBlock = worldIn.getBlockState(newPos);
+            IBlockState upBlock = world.getBlockState(newPos);
             if (upBlock.getBlock() == state.getBlock()) {
                 continue;
             }
 
-            if (canPlaceBlockAt(worldIn, newPos)) {
-                worldIn.setBlockState(newPos, state);
+            if (canPlaceBlockAt(world, newPos)) {
+                world.setBlockState(newPos, state);
                 break;
             }
             return false;
         }
 
-        if (!playerIn.isCreative()) {
+        if (!player.isCreative()) {
             stack.shrink(1);
         }
 
-        worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), blockSoundType.getPlaceSound(), SoundCategory.BLOCKS, 1, 1, true);
+        world.playSound(pos.getX(), pos.getY(), pos.getZ(), blockSoundType.getPlaceSound(), SoundCategory.BLOCKS, 1, 1, true);
         return true;
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entityIn) {
         if (!(entityIn instanceof EntityLivingBase)) {
             return;
         }
@@ -106,6 +106,7 @@ public abstract class BaseBlockScaffold extends Block {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         if (!canBlockStay(worldIn, pos)) {
@@ -173,19 +174,17 @@ public abstract class BaseBlockScaffold extends Block {
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        return super.canPlaceBlockAt(worldIn, pos)
-            && canBlockStay(worldIn, pos);
+    public boolean canPlaceBlockAt(World world, BlockPos pos) {
+        return super.canPlaceBlockAt(world, pos)
+            && !world.isOutsideBuildHeight(pos)
+            && canBlockStay(world, pos);
     }
 
     private double limit(double value, double min, double max) {
         if (Double.isNaN(value) || value <= min) {
             return min;
         }
-        if (value >= max) {
-            return max;
-        }
-        return value;
+        return Math.min(value, max);
     }
 
     @Override
@@ -198,20 +197,18 @@ public abstract class BaseBlockScaffold extends Block {
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+    @SuppressWarnings("deprecation")
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
         return COLLISION_AABB;
     }
 
     protected abstract double getMotionSpeed();
 
     protected abstract int getSideBlockAvailable();
-
-    private enum State {
-        SCAFFOLD
-    }
 }

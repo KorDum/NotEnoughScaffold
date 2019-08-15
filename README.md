@@ -22,4 +22,4 @@ New versions will be created in branched named like {mc_version}-{mod_version}
 ```
 
 5. Select `Minecraft Client` from _Run configurations_ and press the green play button.
-Minecraft should now launch with Binnie and all of its dependencies loaded :)
+Minecraft should now launch.
