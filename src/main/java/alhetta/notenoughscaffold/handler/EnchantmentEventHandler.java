@@ -1,6 +1,7 @@
 package alhetta.notenoughscaffold.handler;
 
 import alhetta.notenoughscaffold.registry.EnchantmentRegistry;
+import alhetta.notenoughscaffold.util.IdentityUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -12,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -20,17 +20,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.Map;
 import java.util.Random;
 
-import alhetta.notenoughscaffold.util.IdentityUtil;
-
 public class EnchantmentEventHandler {
     public static EnchantmentEventHandler INSTANCE = new EnchantmentEventHandler();
-
-    private EnumFacing side;
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onPlayerInteractEvent(PlayerInteractEvent event) {
-        side = event.getFace();
-    }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onBlockBreakEvent(BlockEvent.BreakEvent event) {
@@ -62,15 +53,17 @@ public class EnchantmentEventHandler {
             return;
         }
 
+        BlockPos pos = event.getPos();
+        EnumFacing side = EnumFacing.getDirectionFromEntityLiving(pos, player);
         Random random = new Random();
         int damage = 0;
+
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (i == 0 && j == 0) {
                     continue;
                 }
 
-                BlockPos pos;
                 if (side == EnumFacing.DOWN || side == EnumFacing.UP) {
                     pos = event.getPos().add(i, 0, j);
                 } else if (side == EnumFacing.EAST || side == EnumFacing.WEST) {
